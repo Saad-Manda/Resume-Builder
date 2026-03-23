@@ -4,12 +4,19 @@ import mongoose from 'mongoose';
 import { config } from './settings/config.js';
 import logger from './helpers/winston.helper.js';
 
+import userRouter from './user/user.router.js';
+import authRouter from './auth/auth.router.js';
+
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Routes
+app.use('/api/user', userRouter);
+app.use('/api/auth', authRouter);
 
 // Basic Route for testing
 app.get('/', (req, res) => {
