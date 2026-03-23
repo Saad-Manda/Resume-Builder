@@ -32,64 +32,89 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="app-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-        <h2 style={{ color: 'var(--text-secondary)' }}>Loading Dashboard...</h2>
+        <h2 style={{ color: 'var(--text-secondary)', fontWeight: 400 }}>Loading Dashboard...</h2>
       </div>
     );
   }
 
   return (
     <div className="app-container" style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
-        <h1 className="auth-title" style={{ margin: 0 }}>Dashboard</h1>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'var(--text-primary)', clipPath: 'polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)' }}></div>
+          <h1 className="auth-title" style={{ margin: 0, fontSize: '1.1rem', letterSpacing: '0.5px' }}>Dashboard</h1>
+          <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginLeft: '1rem' }}>Resume Portfolios</span>
+        </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <button onClick={() => navigate('/resume-builder')} className="btn-primary" style={{ width: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
-            <Plus size={16} /> Create Resume
+          <button onClick={() => navigate('/resume-builder')} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderRadius: '24px' }}>
+            <Plus size={14} /> Create Resume
           </button>
-          <button onClick={handleLogout} className="btn-primary" style={{ width: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
-            <LogOut size={16} /> Logout
+          <button onClick={handleLogout} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', border: 'none', color: 'var(--text-secondary)' }}>
+            Logout
           </button>
         </div>
       </header>
       
+      <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+         <h2 style={{ fontSize: '1.75rem', margin: 0, fontWeight: 400 }}>Overview</h2>
+         <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Total Resumes Built: {resumes.length}</span>
+      </div>
+
       {resumes.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-secondary)' }}>
-          <div style={{ background: 'rgba(255, 255, 255, 0.05)', display: 'inline-block', padding: '1.5rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
-            <FileText size={48} color="rgba(255,255,255,0.4)" />
+          <div style={{ background: 'var(--glass-border)', display: 'inline-block', padding: '1.5rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
+            <FileText size={48} color="var(--text-secondary)" />
           </div>
-          <h2 style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>No resumes built yet</h2>
-          <p>Click the "Create Resume" button above to craft your first professional profile.</p>
+          <h2 style={{ color: 'var(--text-primary)', marginBottom: '0.5rem', fontWeight: 400 }}>No tracking data</h2>
+          <p style={{ fontSize: '0.875rem' }}>Click the "Create Resume" button above to craft your first professional profile.</p>
         </div>
       ) : (
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2rem' }}>
-        {resumes.map((resume) => (
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
+        {resumes.map((resume, index) => (
           <motion.div 
             key={resume._id}
-            whileHover={{ scale: 1.02, y: -5 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
             className="glass-panel" 
-            style={{ padding: '1.5rem', cursor: 'pointer', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}
+            style={{ 
+              padding: '1.5rem', 
+              cursor: 'pointer', 
+              display: 'flex', 
+              flexDirection: 'column', 
+              position: 'relative',
+              background: index === 0 ? 'var(--accent)' : 'var(--bg-secondary)',
+              color: index === 0 ? 'var(--text-dark)' : 'var(--text-primary)',
+              border: index === 0 ? 'none' : '1px solid var(--glass-border)'
+            }}
             onClick={() => setSelectedResume(resume)}
           >
-            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '4px', background: 'var(--accent-gradient)' }}></div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+              <div style={{ fontSize: '0.875rem', opacity: 0.8 }}>Resume Profile</div>
+              <div style={{ letterSpacing: '2px', opacity: 0.8 }}>...</div>
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
               <img 
-                src={`http://localhost:5000${resume.photographUrl}`} 
+                src={resume.photographUrl ? `http://localhost:5000${resume.photographUrl}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(resume.name)}&background=24282c&color=ffffff`} 
                 alt="Profile" 
-                style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--accent)' }}
+                style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover', border: index === 0 ? '2px solid rgba(0,0,0,0.1)' : '2px solid var(--glass-border)' }}
+                onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(resume.name)}&background=24282c&color=ffffff`; }}
               />
               <div>
-                <h3 style={{ margin: '0 0 0.25rem 0', fontSize: '1.25rem' }}>{resume.name}</h3>
-                <span style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem', background: 'rgba(59, 130, 246, 0.2)', color: 'var(--accent)', borderRadius: '12px' }}>
-                  {resume.languageProficiency}
-                </span>
+                <h3 style={{ margin: '0 0 0.25rem 0', fontSize: '1.1rem', fontWeight: 400 }}>{resume.name}</h3>
+                <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>{resume.languageProficiency}</div>
               </div>
             </div>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-              <Mail size={14} /> {resume.email}
-            </p>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Award size={14} /> {resume.skills.length > 30 ? resume.skills.substring(0, 30) + '...' : resume.skills}
-            </p>
+
+            <div style={{ marginTop: 'auto' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: 300, marginBottom: '0.25rem', lineHeight: 1 }}>{resume.skills.split(',').length}</div>
+              <div style={{ fontSize: '0.75rem', opacity: 0.7, letterSpacing: '0.5px' }}>Listed Skills</div>
+            </div>
+            
+            {/* Minimal power/usage line indicator from the reference image */}
+            <div style={{ height: '2px', background: index === 0 ? 'rgba(0,0,0,0.1)' : 'var(--glass-border)', width: '100%', marginTop: '1.5rem', position: 'relative' }}>
+               <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', width: (Math.random() * 60 + 20) + '%', background: index === 0 ? 'rgba(0,0,0,0.3)' : 'var(--text-secondary)' }}></div>
+            </div>
           </motion.div>
         ))}
       </div>
@@ -106,23 +131,22 @@ const Dashboard = () => {
               style={{
                 position: 'fixed',
                 top: 0, left: 0, right: 0, bottom: 0,
-                background: 'rgba(15, 23, 42, 0.8)',
-                backdropFilter: 'blur(4px)',
+                background: 'rgba(10, 11, 13, 0.9)',
                 zIndex: 40,
               }}
               onClick={() => setSelectedResume(null)}
             />
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="glass-panel"
               style={{
                 position: 'fixed',
                 top: '5%',
                 left: '50%',
                 x: '-50%',
-                width: '90%',
+                width: '100%',
                 maxWidth: '800px',
                 maxHeight: '90vh',
                 overflowY: 'auto',
@@ -130,54 +154,72 @@ const Dashboard = () => {
                 padding: '3rem',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '2rem'
+                gap: '2rem',
+                background: 'var(--bg-secondary)',
+                border: '1px solid var(--glass-border)',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
               }}
             >
-              <button 
-                onClick={() => setSelectedResume(null)}
-                style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', borderRadius: '50%', padding: '0.5rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                <X size={20} />
-              </button>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Detailed report</span>
+                <button 
+                  onClick={() => setSelectedResume(null)}
+                  style={{ background: 'transparent', border: '1px solid var(--glass-border)', color: 'var(--text-primary)', borderRadius: '24px', padding: '0.5rem 1rem', cursor: 'pointer', fontSize: '0.875rem' }}
+                >
+                  Close
+                </button>
+              </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-                <div style={{ width: '120px', height: '120px', borderRadius: '50%', padding: '4px', background: 'var(--accent-gradient)' }}>
-                  <img 
-                    src={`http://localhost:5000${selectedResume.photographUrl}`} 
-                    alt="Profile" 
-                    style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', border: '4px solid var(--bg-primary)' }}
-                  />
-                </div>
+                <img 
+                  src={selectedResume.photographUrl ? `http://localhost:5000${selectedResume.photographUrl}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedResume.name)}&background=24282c&color=ffffff`}  
+                  alt="Profile" 
+                  style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }}
+                  onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedResume.name)}&background=24282c&color=ffffff`; }}
+                />
                 <div>
-                  <h2 style={{ fontSize: '2.5rem', margin: '0 0 0.5rem 0', background: 'var(--accent-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  <h2 style={{ fontSize: '1.75rem', margin: '0 0 0.5rem 0', fontWeight: 400 }}>
                     {selectedResume.name}
                   </h2>
-                  <div style={{ display: 'flex', gap: '1.5rem', color: 'var(--text-secondary)', flexWrap: 'wrap', marginTop: '1rem' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Mail size={16} color="var(--accent)" /> {selectedResume.email}</span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Phone size={16} color="var(--accent)" /> {selectedResume.phone}</span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><MapPin size={16} color="var(--accent)" /> {selectedResume.address}</span>
+                  <div style={{ display: 'flex', gap: '1.5rem', color: 'var(--text-secondary)', flexWrap: 'wrap', marginTop: '0.5rem', fontSize: '0.875rem' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Mail size={14} /> {selectedResume.email}</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Phone size={14} /> {selectedResume.phone}</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><MapPin size={14} /> {selectedResume.address}</span>
                   </div>
                 </div>
               </div>
               
-              <hr style={{ borderColor: 'var(--glass-border)', margin: '1rem 0' }} />
+              <div style={{ height: '1px', background: 'var(--glass-border)', margin: '0.5rem 0' }}></div>
 
               <div className="form-grid">
-                <div style={{ background: 'rgba(15, 23, 42, 0.4)', padding: '1.5rem', borderRadius: '12px' }}>
-                  <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', color: 'var(--accent)' }}><Book size={20} /> Education</h3>
-                  <p style={{ whiteSpace: 'pre-wrap', color: 'var(--text-secondary)', lineHeight: '1.6' }}>{selectedResume.education}</p>
+                <div style={{ border: '1px solid var(--glass-border)', padding: '1.5rem', borderRadius: '12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                    <h3 style={{ fontWeight: 400, fontSize: '0.875rem', margin: 0, color: 'var(--text-primary)' }}>Education History</h3>
+                    <span style={{ color: 'var(--text-secondary)' }}>...</span>
+                  </div>
+                  <p style={{ whiteSpace: 'pre-wrap', color: 'var(--text-secondary)', lineHeight: '1.6', fontSize: '0.875rem' }}>{selectedResume.education}</p>
                 </div>
-                <div style={{ background: 'rgba(15, 23, 42, 0.4)', padding: '1.5rem', borderRadius: '12px' }}>
-                  <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', color: 'var(--accent)' }}><Award size={20} /> Skills</h3>
-                  <p style={{ whiteSpace: 'pre-wrap', color: 'var(--text-secondary)', lineHeight: '1.6' }}>{selectedResume.skills}</p>
+                
+                <div style={{ border: '1px solid var(--glass-border)', padding: '1.5rem', borderRadius: '12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                    <h3 style={{ fontWeight: 400, fontSize: '0.875rem', margin: 0, color: 'var(--text-primary)' }}>Skills Tracking</h3>
+                    <span style={{ color: 'var(--text-secondary)' }}>...</span>
+                  </div>
+                  <p style={{ whiteSpace: 'pre-wrap', color: 'var(--text-secondary)', lineHeight: '1.6', fontSize: '0.875rem' }}>{selectedResume.skills}</p>
                 </div>
               </div>
 
-              <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, color: 'var(--accent)' }}><Globe size={20} /> Language Proficiency:</h3>
-                <span style={{ padding: '0.5rem 1rem', background: 'rgba(59, 130, 246, 0.1)', border: '1px solid var(--accent)', borderRadius: '20px', color: 'var(--text-primary)', fontWeight: '500' }}>
-                  {selectedResume.languageProficiency}
-                </span>
+              <div style={{ border: '1px solid var(--glass-border)', padding: '1.5rem', borderRadius: '12px', background: 'rgba(219, 234, 197, 0.05)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                  <h3 style={{ fontWeight: 400, fontSize: '0.875rem', margin: 0, color: 'var(--accent)' }}>Language Proficiency Settings</h3>
+                  <span style={{ fontSize: '0.875rem', color: 'var(--success)' }}>Connected</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1rem' }}>
+                  <span style={{ fontSize: '2.5rem', fontWeight: 300, lineHeight: 1 }}>
+                    {selectedResume.languageProficiency}
+                  </span>
+                </div>
+                <span style={{ color: 'var(--text-secondary)', display: 'block', marginTop: '1rem', fontSize: '0.875rem' }}>Terminal Environment Assigned</span>
               </div>
             </motion.div>
           </>

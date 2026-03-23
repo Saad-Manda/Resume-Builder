@@ -17,7 +17,7 @@ const resumeSchema = new mongoose.Schema({
     enum: ['Beginner', 'Intermediate', 'Advanced'],
     required: true
   },
-  photographUrl: { type: String, required: true }
+  photographUrl: { type: String, default: '' }
 }, { timestamps: true });
 
 export const Resume = mongoose.model('Resume', resumeSchema);

@@ -6,12 +6,8 @@ export const createResume = async (req, res) => {
   try {
     const { name, email, phone, address, education, skills, languageProficiency } = req.body;
     
-    // Construct public URL for photograph
-    const photographUrl = req.file ? `/uploads/${req.file.filename}` : null;
-
-    if (!photographUrl) {
-      throw new Error('Photograph upload is required.');
-    }
+    // Construct public URL for photograph (optional now)
+    const photographUrl = req.file ? `/uploads/${req.file.filename}` : '';
 
     const resumeData = {
       userId: req.user.userId,
