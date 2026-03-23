@@ -6,6 +6,7 @@ import logger from './helpers/winston.helper.js';
 
 import userRouter from './user/user.router.js';
 import authRouter from './auth/auth.router.js';
+import { actionLogger } from './middleware/actionLogger.middleware.js';
 
 const app = express();
 
@@ -13,6 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(actionLogger); // Intercept all requests for logging
 
 // Routes
 app.use('/api/user', userRouter);
