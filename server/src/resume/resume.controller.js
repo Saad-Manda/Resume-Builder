@@ -1,4 +1,5 @@
 import { createResumeProvider } from './providers/createResume.provider.js';
+import { getResumesProvider } from './providers/getResume.provider.js';
 import logger from '../helpers/winston.helper.js';
 
 export const createResume = async (req, res) => {
@@ -31,5 +32,15 @@ export const createResume = async (req, res) => {
   } catch (error) {
     logger.error(`Failed to create resume: ${error.message}`);
     return res.status(400).json({ error: error.message });
+  }
+};
+
+export const getResume = async (req, res) => {
+  try {
+    const resumes = await getResumesProvider(req.user.userId);
+    return res.status(200).json({ resumes });
+  } catch (error) {
+    logger.error(`Failed to fetch resumes: ${error.message}`);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
