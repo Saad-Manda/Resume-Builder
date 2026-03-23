@@ -1,0 +1,44 @@
+### Create Resume
+# Note: Testing file uploads via .http is tricky because you have to pass the raw binary or use curl.
+# However, VSCode REST Client supports multipart form data.
+# Replace `<absolute path to an image file>` with an actual path to a .jpg or .png on your local machine.
+# Ensure you put a valid JWT token in the Authorization header.
+
+POST http://localhost:5000/api/resume
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWMxMWNiMDZjZWEwNmY4NzQ5MDUzNjEiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3NzQyNjUyNzcsImV4cCI6MTc3NDM1MTY3N30.jL1UPTgNO9Sgfj150w-jArCA0rw2Ra69BvEmHSIgGsE
+Content-Type: multipart/form-data; boundary=WebKitFormBoundary
+
+--WebKitFormBoundary
+Content-Disposition: form-data; name="name"
+
+John Doe
+--WebKitFormBoundary
+Content-Disposition: form-data; name="email"
+
+john@example.com
+--WebKitFormBoundary
+Content-Disposition: form-data; name="phone"
+
+1234567890
+--WebKitFormBoundary
+Content-Disposition: form-data; name="address"
+
+123 Main St
+--WebKitFormBoundary
+Content-Disposition: form-data; name="education"
+
+B.S. Computer Science
+--WebKitFormBoundary
+Content-Disposition: form-data; name="skills"
+
+Node.js, React, MongoDB
+--WebKitFormBoundary
+Content-Disposition: form-data; name="languageProficiency"
+
+Advanced
+--WebKitFormBoundary
+Content-Disposition: form-data; name="photograph"; filename="profile.jpg"
+Content-Type: image/jpeg
+
+< ./profile.jpg 
+--WebKitFormBoundary--

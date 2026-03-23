@@ -4,8 +4,10 @@ import mongoose from 'mongoose';
 import { config } from './settings/config.js';
 import logger from './helpers/winston.helper.js';
 
+import path from 'path';
 import userRouter from './user/user.router.js';
 import authRouter from './auth/auth.router.js';
+import resumeRouter from './resume/resume.router.js';
 import { actionLogger } from './middleware/actionLogger.middleware.js';
 
 const app = express();
@@ -16,9 +18,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(actionLogger); // Intercept all requests for logging
 
+// Serve static uploads directory
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+
 // Routes
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/resume', resumeRouter);
 
 // Basic Route for testing
 app.get('/', (req, res) => {
