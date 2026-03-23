@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { User } from '../user.schema.js';
 import { validatePassword } from '../validators/createUser.validator.js';
+import { config } from '../../settings/config.js';
 
 export const createUser = async ({ email, password }) => {
   if (!email || !password) {
@@ -22,5 +24,11 @@ export const createUser = async ({ email, password }) => {
   const user = new User({ email, password: hashedPassword });
   await user.save();
 
-  return { _id: user._id, email: user.email };
+  const token = jwt.sign(
+    { userId: user._id, email: user.email },
+    config.jwtSecret,
+    { expiresIn: '1d' }
+  );
+
+  return { token, user: { _id: user._id, email: user.email } };
 };

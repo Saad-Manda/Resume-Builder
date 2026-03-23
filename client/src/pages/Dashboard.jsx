@@ -82,9 +82,9 @@ const Dashboard = () => {
               display: 'flex', 
               flexDirection: 'column', 
               position: 'relative',
-              background: index === 0 ? 'var(--accent)' : 'var(--bg-secondary)',
-              color: index === 0 ? 'var(--text-dark)' : 'var(--text-primary)',
-              border: index === 0 ? 'none' : '1px solid var(--glass-border)'
+              background: 'var(--bg-secondary)',
+              color: 'var(--text-primary)',
+              border: '1px solid var(--glass-border)'
             }}
             onClick={() => setSelectedResume(resume)}
           >
@@ -93,27 +93,27 @@ const Dashboard = () => {
               <div style={{ letterSpacing: '2px', opacity: 0.8 }}>...</div>
             </div>
             
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2rem' }}>
               <img 
-                src={resume.photographUrl ? `http://localhost:5000${resume.photographUrl}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(resume.name)}&background=24282c&color=ffffff`} 
+                src={resume.photographUrl ? `http://localhost:5000${resume.photographUrl}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(resume.name)}&background=24282c&color=ffffff&size=128`} 
                 alt="Profile" 
-                style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover', border: index === 0 ? '2px solid rgba(0,0,0,0.1)' : '2px solid var(--glass-border)' }}
-                onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(resume.name)}&background=24282c&color=ffffff`; }}
+                style={{ width: '96px', height: '96px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--glass-border)' }}
+                onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(resume.name)}&background=24282c&color=ffffff&size=128`; }}
               />
               <div>
-                <h3 style={{ margin: '0 0 0.25rem 0', fontSize: '1.1rem', fontWeight: 400 }}>{resume.name}</h3>
+                <h3 style={{ margin: '0 0 0.25rem 0', fontSize: '1.1rem', fontWeight: 600 }}>{resume.name}</h3>
                 <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>{resume.languageProficiency}</div>
               </div>
             </div>
 
             <div style={{ marginTop: 'auto' }}>
-              <div style={{ fontSize: '2.5rem', fontWeight: 300, marginBottom: '0.25rem', lineHeight: 1 }}>{resume.skills.split(',').length}</div>
-              <div style={{ fontSize: '0.75rem', opacity: 0.7, letterSpacing: '0.5px' }}>Listed Skills</div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 300, marginBottom: '0.25rem', lineHeight: 1 }}>{resume.skills.split(',').length}</div>
+              <div style={{ fontSize: '0.65rem', opacity: 0.7, letterSpacing: '0.5px' }}>Listed Skills</div>
             </div>
             
             {/* Minimal power/usage line indicator from the reference image */}
-            <div style={{ height: '2px', background: index === 0 ? 'rgba(0,0,0,0.1)' : 'var(--glass-border)', width: '100%', marginTop: '1.5rem', position: 'relative' }}>
-               <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', width: (Math.random() * 60 + 20) + '%', background: index === 0 ? 'rgba(0,0,0,0.3)' : 'var(--text-secondary)' }}></div>
+            <div style={{ height: '2px', background: 'var(--glass-border)', width: '100%', marginTop: '1.5rem', position: 'relative' }}>
+               <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', width: (Math.random() * 60 + 20) + '%', background: 'var(--text-secondary)' }}></div>
             </div>
           </motion.div>
         ))}

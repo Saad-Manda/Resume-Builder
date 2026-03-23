@@ -34,10 +34,7 @@ const ResumeBuilder = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!photo) {
-      setError('Please upload a photograph.');
-      return;
-    }
+    // Photo is now optional
 
     setLoading(true);
     setError('');
@@ -46,7 +43,9 @@ const ResumeBuilder = () => {
     Object.keys(formData).forEach(key => {
       data.append(key, formData[key]);
     });
-    data.append('photograph', photo);
+    if (photo) {
+      data.append('photograph', photo);
+    }
 
     try {
       const res = await api.post('/resume', data, {

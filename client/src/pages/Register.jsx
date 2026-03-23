@@ -16,8 +16,9 @@ const Register = () => {
     setError('');
 
     try {
-      await api.post('/user/register', formData);
-      navigate('/login', { state: { message: 'Registration successful! Please login.' } });
+      const res = await api.post('/user/register', formData);
+      localStorage.setItem('token', res.data.token);
+      navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.error || 'Registration failed');
     } finally {
