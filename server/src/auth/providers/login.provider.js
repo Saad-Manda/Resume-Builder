@@ -28,7 +28,7 @@ export const loginWithEmailAndPassword = async ({ email, password }) => {
 
   // Simulate OTP sending
   logger.info(`=========================================`);
-  logger.info(`🚨 MOCK OTP FOR ${email}: ${otp} 🚨`);
+  logger.info(`MOCK OTP FOR ${email}: ${otp}`);
   logger.info(`=========================================`);
 
   return { message: 'OTP generated and sent successfully.', email: user.email };
