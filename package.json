@@ -4,9 +4,8 @@
   "private": true,
   "scripts": {
     "install": "cd server && npm install && cd ../client && npm install",
-    "start": "cd server && npm run dev",
-    "start:prod": "cd server && npm start",
-    "build:client": "cd client && npm run build",
-    "lint": "cd client && npm run lint"
+    "build": "cd client && npm run build",
+    "start": "npm run build && cd server && npm start",
+    "dev": "cd server && npm run dev"
   }
 }

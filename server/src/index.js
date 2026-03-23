@@ -26,9 +26,13 @@ app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/resume', resumeRouter);
 
-// Basic Route for testing
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Resume Builder API' });
+// Serve React frontend static files
+const frontendPath = path.join(process.cwd(), '..', 'client', 'dist');
+app.use(express.static(frontendPath));
+
+// Serve index.html for all non-API routes (React Router SPA)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 // Database Connection
