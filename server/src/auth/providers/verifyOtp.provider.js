@@ -23,6 +23,7 @@ export const verifyOtpProvider = async ({ email, otp }) => {
   // Clear OTP
   user.otp = null;
   user.otpExpiry = null;
+  user.isVerified = true;
   await user.save();
 
   // Generate JWT

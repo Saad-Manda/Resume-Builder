@@ -10,7 +10,7 @@ Content-Type: application/json
 ###
 
 ### Verify OTP
-# Replace OTP with the 6-digit code logged in the server console
+# Replace OTP with the 6-digit code sent to your email
 POST http://localhost:5000/api/auth/verify-otp
 Content-Type: application/json
 

@@ -7,8 +7,8 @@ import api from '../services/api';
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [step, setStep] = useState(location.state?.step || 1);
+  const [formData, setFormData] = useState({ email: location.state?.email || '', password: '' });
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const [message, setMessage] = useState(location.state?.message || '');
@@ -22,6 +22,15 @@ const Login = () => {
     
     try {
       const res = await api.post('/auth/login', formData);
+      if (res.data.requiresVerification) {
+        navigate('/verify-otp', {
+          state: {
+            message: res.data.message,
+            email: res.data.email
+          }
+        });
+        return;
+      }
       setMessage(res.data.message);
       setStep(2);
     } catch (err) {
@@ -66,7 +75,7 @@ const Login = () => {
           
           <h1 className="auth-title">{step === 1 ? 'Welcome Back' : 'Verification'}</h1>
           <p className="auth-subtitle">
-            {step === 1 ? 'Login to access your premium dashboard' : 'Enter the OTP sent to your terminal'}
+            {step === 1 ? 'Login to access your premium dashboard' : 'Enter the OTP sent to your email'}
           </p>
 
           {message && <div style={{ color: 'var(--success)', marginBottom: '1rem', background: 'rgba(16, 185, 129, 0.1)', padding: '0.75rem', borderRadius: '8px' }}>{message}</div>}

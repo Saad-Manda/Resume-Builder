@@ -7,7 +7,7 @@ export const registerUser = async (req, res) => {
     const result = await createUser({ email, password });
     
     logger.info(`User registered successfully: ${email}`);
-    return res.status(201).json({ message: 'User registered successfully', ...result });
+    return res.status(201).json(result);
   } catch (error) {
     logger.error(`Registration failed: ${error.message}`);
     return res.status(400).json({ error: error.message });

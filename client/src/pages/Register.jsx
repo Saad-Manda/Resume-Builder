@@ -17,8 +17,12 @@ const Register = () => {
 
     try {
       const res = await api.post('/user/register', formData);
-      localStorage.setItem('token', res.data.token);
-      navigate('/dashboard');
+      navigate('/verify-otp', {
+        state: {
+          message: res.data.message,
+          email: res.data.email
+        }
+      });
     } catch (err) {
       setError(err.response?.data?.error || 'Registration failed');
     } finally {

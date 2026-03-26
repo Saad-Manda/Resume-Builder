@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import { User } from '../user.schema.js';
 import { validatePassword } from '../validators/createUser.validator.js';
-import { config } from '../../settings/config.js';
+import { sendOtpEmail } from '../../helpers/email.helper.js';
 
 export const createUser = async ({ email, password }) => {
   if (!email || !password) {
@@ -20,15 +20,16 @@ export const createUser = async ({ email, password }) => {
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
+  const otp = crypto.randomInt(100000, 999999).toString();
+  const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
-  const user = new User({ email, password: hashedPassword });
+  const user = new User({ email, password: hashedPassword, otp, otpExpiry });
   await user.save();
 
-  const token = jwt.sign(
-    { userId: user._id, email: user.email },
-    config.jwtSecret,
-    { expiresIn: '1d' }
-  );
+  await sendOtpEmail({ to: email, otp, purpose: 'signup' });
 
-  return { token, user: { _id: user._id, email: user.email } };
+  return {
+    message: 'Registration successful. OTP sent to your email.',
+    email: user.email
+  };
 };
